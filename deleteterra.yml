@@ -1,0 +1,19 @@
+---
+- name: Delete an S3 bucket
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    aws_region: us-east-1
+    bucket_name: terrafrom-learning-bucket-fun-star-bucket 
+  tasks:
+    - name: Delete S3 bucket (and all its contents)
+      amazon.aws.s3_bucket:
+        name: "{{ bucket_name }}"
+        state: absent
+        region: "{{ aws_region }}"
+        force: true # ensures bucket is emptied before deletion
+      register: delete_result
+    - name: Show deletion result
+      debug:
+        var: delete_result
